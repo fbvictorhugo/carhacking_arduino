@@ -1,4 +1,3 @@
-
 #include <AFMotor.h>
 
 AF_DCMotor M_BACK(2);
@@ -39,7 +38,6 @@ void loop()
 {
   if (Serial.available() > 0)
   {
-
     data = Serial.read();
 
     switch (char(data)) {
@@ -56,7 +54,7 @@ void loop()
         break;
 
       case BTN_BUZZ:
-        //tone(BUZZ, 440, 200); //<-- conflitor com o motor
+        //tone(BUZZ, 440, 200); //<-- conflito com o motor
 
         digitalWrite(BUZZ, HIGH);
         delay(200);
@@ -96,7 +94,7 @@ void loop()
 
       case AXIS_DOWN:
         M_BACK.run(BACKWARD);
-        M_FRONT.run(BACKWARD);
+        M_FRONT.run(RELEASE);
         Serial.println("AXIS_DOWN");
         break;
 
