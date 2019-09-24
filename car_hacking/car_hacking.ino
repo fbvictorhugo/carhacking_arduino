@@ -1,13 +1,19 @@
 #include <AFMotor.h>
+#include <Ultrasonic.h>
+
 
 AF_DCMotor M_BACK(2);
 AF_DCMotor M_FRONT(3);
+
+Ultrasonic ultrassom(9, 10);
 
 int LED_FRONT = A5;
 int LED_BACK = A3;
 int BUZZ = A0;
 
 int data;
+
+long distancia;
 
 const char BTN_LED_ON = 'a';
 const char BTN_LED_OFF = 'b';
@@ -21,6 +27,8 @@ const char AXIS_LEFT_DOWN = 'g';
 const char AXIS_RIGHT_UP = 'h';
 const char AXIS_RIGHT_DOWN = 'i';
 const char AXIS_CENTERED = 'j';
+
+bool moveToFront = false;
 
 void setup()
 {
@@ -36,9 +44,14 @@ void setup()
 
 void loop()
 {
+
+  distancia = ultrassom.Ranging(CM);
+  Serial.println(distancia);
+
   if (Serial.available() > 0)
   {
     data = Serial.read();
+    moveToFront = false;
 
     switch (char(data)) {
       case BTN_LED_ON:
@@ -54,27 +67,27 @@ void loop()
         break;
 
       case BTN_BUZZ:
-        //tone(BUZZ, 440, 200); //<-- conflito com o motor
-
-        digitalWrite(BUZZ, HIGH);
-        delay(200);
-        digitalWrite(BUZZ, LOW);
-        Serial.println("BTN_BUZZ");
+        buzz();
         break;
 
       case AXIS_UP:
+        moveToFront = true;
         M_BACK.run(FORWARD);
         M_FRONT.run(RELEASE);
         Serial.println("AXIS_UP");
+
         break;
 
       case AXIS_LEFT_UP:
+        moveToFront = true;
         M_BACK.run(FORWARD);
         M_FRONT.run(FORWARD);
         Serial.println("AXIS_LEFT_UP");
+
         break;
 
       case AXIS_RIGHT_UP:
+        moveToFront = true;
         M_BACK.run(FORWARD);
         M_FRONT.run(BACKWARD);
         Serial.println("AXIS_RIGHT_UP");
@@ -103,6 +116,27 @@ void loop()
         Serial.println("AXIS_CENTERED");
         break;
     }
+  } else if (!isSafeToUP() && moveToFront) {
+    Serial.println("NOT SAFE !!!!");
+    stopMove();
+  }
+
+}
+
+void buzz() {
+  //tone(BUZZ, 440, 200); //<-- conflito com o motor
+  digitalWrite(BUZZ, HIGH);
+  delay(200);
+  digitalWrite(BUZZ, LOW);
+  Serial.println("BTN_BUZZ");
+}
+
+bool isSafeToUP() {
+
+  if (distancia > 20) {
+    return true;
+  } else {
+    return false;
   }
 }
 
