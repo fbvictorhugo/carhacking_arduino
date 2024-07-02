@@ -23,8 +23,8 @@ Projeto **Arduino** para controlar um carrinho.
 
 Com o estudo o foco foi controlar um carrinho de controle remoto incorporando o arduino e substituindo o controle padrão pelo **Arduino**.
 
-Com o arduino foi possível controlar os LEds que o carrinho já possuia, assim como os motores existentes. Adicionando um buzzer como buzina, e sensor para que o carrinho não batesse de proposito.  
-Controlado por aplicativo bluetooth. *Vide abaixo.*
+Com o arduino foi possível controlar os LEds que o carrinho já possuia, assim como os motores existentes. Adicionando um buzzer como buzina, e sensor para que o carrinho não batesse.  
+Controlado por aplicativo bluetooth. [Android Joystick Bluetooth for Arduino](https://github.com/fbvictorhugo/joystick_bluetooth?tab=readme-ov-file#android-joystick-bluetooth-for-arduino-)
 
 
 ##### Command Mapping
